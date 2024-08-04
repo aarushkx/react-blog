@@ -1,26 +1,38 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import authService from "./appwrite/auth";
+import { login, logout } from "./store/authSlice";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 function App() {
-
-    /**
-     * useState hook to manage the loading state of the application.
-     * This state is used to show a loading spinner while the application is loading.
-     */
     const [loading, setLoading] = useState(false);
-
-    /**
-     * useDispatch hook from react-redux to dispatch actions to the redux store.
-     * This hook is used to dispatch actions for authentication and user data.
-     */
     const dispatch = useDispatch();
 
-    return (
-        <>
-            <h1>Blog App with Appwrite</h1>
-        </>
-    );
+    useEffect(() => {
+        authService
+            .getCurrentUser()
+            .then((userData) => {
+                if (userData) {
+                    dispatch(login({ userData }));
+                } else {
+                    dispatch(logout());
+                }
+            })
+            .catch((error) => console.log(error))
+            .finally(() => setLoading(false));
+    }, []);
+
+    return !loading ? (
+        <div className="min-h-screen flex flex-wrap content-between bg-gr400">
+            <div className="w-full block">
+                <Header />
+                <main>{/* TODO: Add Outlet */}</main>
+                <Footer />
+            </div>
+        </div>
+    ) : null;
 }
 
 export default App;

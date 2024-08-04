@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import authSlice from "./authSlice";
 
 /**
  * This function is used to configure the Redux store.
@@ -10,7 +11,8 @@ import { configureStore } from "@reduxjs/toolkit";
  */
 const store = configureStore({
     reducer: {
-        // reducer
+        auth : authSlice,
+        // TODO: Add more slices here for posts
     },
 });
 
