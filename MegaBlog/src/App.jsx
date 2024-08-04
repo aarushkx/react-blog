@@ -1,10 +1,9 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import authService from "./appwrite/auth";
 import { login, logout } from "./store/authSlice";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
+import {Footer, Header} from "./components"
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -25,10 +24,10 @@ function App() {
     }, []);
 
     return !loading ? (
-        <div className="min-h-screen flex flex-wrap content-between bg-gr400">
+        <div className="min-h-screen flex flex-wrap content-between bg-gray-400">
             <div className="w-full block">
                 <Header />
-                <main>{/* TODO: Add Outlet */}</main>
+                {/* <main>TODO: Add Outlet</main> */}
                 <Footer />
             </div>
         </div>

@@ -11,6 +11,7 @@ export class AuthService {
      * This client will be used to communicate with the Appwrite API
      */
     client = new Client();
+    account;
 
     /**
      * Constructor for the AuthService class.
@@ -20,13 +21,13 @@ export class AuthService {
         this.client
             .setEndpoint(conf.appwriteUrl)
             .setProject(conf.appwriteProjectId);
-            
+
         this.account = new Account(this.client);
     }
 
     async createAccount({ email, password, name }) {
         try {
-            await this.account.create(ID.unique(), email, password, name);
+            const userAccount = await this.account.create(ID.unique(), email, password, name);
             if (userAccount) {
                 return this.login({ email, password });
             } else {
@@ -43,7 +44,7 @@ export class AuthService {
         } catch (error) {
             console.log("Appwrite Service :: login ::  Error", error);
         }
-    }
+    }    
 
     async getCurrentUser() {
         try {
@@ -56,7 +57,7 @@ export class AuthService {
 
     async logout() {
         try {
-            return await this.account.deleteSessions("current");
+            await this.account.deleteSessions("current");
         } catch (error) {
             console.log("Appwrite Service :: logout ::  Error", error);
         }
